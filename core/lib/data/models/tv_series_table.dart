@@ -1,11 +1,5 @@
 import 'package:core/core.dart';
 
-import 'package:core/data/models/tv_series_model.dart';
-import 'package:core/data/models/watchlist_table.dart';
-import 'package:core/domain/entities/tv_series_detail.dart';
-
-import '../../domain/entities/tv_series.dart';
-
 class TVSeriesTable extends Equatable implements WatchlistTable {
   @override
   final int id;

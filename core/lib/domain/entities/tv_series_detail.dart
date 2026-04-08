@@ -1,7 +1,4 @@
-import 'package:core/domain/entities/genre.dart';
-import 'package:equatable/equatable.dart';
-
-import 'tv_series_season.dart';
+import 'package:core/core.dart';
 
 class TVSeriesDetail extends Equatable {
   final int id;

@@ -1,6 +1,4 @@
 import 'package:core/core.dart';
-import 'package:core/data/datasources/db/database_helper.dart';
-import 'package:core/data/models/movie_table.dart';
 
 abstract class MovieLocalDataSource {
   Future<String> insertWatchlist(MovieTable movie);

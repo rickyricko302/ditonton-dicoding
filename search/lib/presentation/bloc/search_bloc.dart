@@ -1,6 +1,4 @@
 import 'package:core/core.dart';
-import 'package:core/domain/entities/movie.dart';
-import 'package:core/domain/entities/tv_series.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:search/search.dart';

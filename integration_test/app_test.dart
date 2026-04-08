@@ -1,6 +1,5 @@
 import 'package:ditonton/main.dart' as app;
-import 'package:core/presentation/pages/tv_series_detail_page.dart';
-import 'package:core/presentation/pages/tv_series_page.dart';
+import 'package:tv_series/tv_series.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';

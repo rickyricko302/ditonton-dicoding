@@ -1,5 +1,4 @@
-import 'package:core/domain/entities/movie.dart';
-import 'package:equatable/equatable.dart';
+import 'package:core/core.dart';
 
 class MovieModel extends Equatable {
   const MovieModel({

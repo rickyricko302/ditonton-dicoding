@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:core/core.dart';
-import 'package:core/data/models/movie_table.dart';
-import 'package:core/data/models/watchlist_table.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {

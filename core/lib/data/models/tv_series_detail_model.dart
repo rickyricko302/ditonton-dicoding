@@ -4,10 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:core/data/models/genre_model.dart';
-import 'package:core/domain/entities/tv_series_detail.dart';
-import 'package:core/domain/entities/tv_series_season.dart';
-import 'package:equatable/equatable.dart';
+import 'package:core/core.dart';
 
 TVSeriesDetailModel tvSeriesDetailModelFromJson(String str) =>
     TVSeriesDetailModel.fromJson(json.decode(str));

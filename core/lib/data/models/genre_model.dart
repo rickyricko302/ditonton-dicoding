@@ -1,5 +1,4 @@
-import 'package:core/domain/entities/genre.dart';
-import 'package:equatable/equatable.dart';
+import 'package:core/core.dart';
 
 class GenreModel extends Equatable {
   const GenreModel({required this.id, required this.name});

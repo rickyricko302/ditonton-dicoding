@@ -1,5 +1,4 @@
-import 'package:core/domain/entities/tv_series.dart';
-import 'package:equatable/equatable.dart';
+import 'package:core/core.dart';
 
 class TVSeriesModel extends Equatable {
   final String? backdropPath;

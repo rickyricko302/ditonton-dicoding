@@ -1,10 +1,5 @@
 import 'package:core/core.dart';
 
-import 'package:core/data/models/movie_model.dart';
-import 'package:core/data/models/watchlist_table.dart';
-import 'package:core/domain/entities/movie.dart';
-import 'package:core/domain/entities/movie_detail.dart';
-
 class MovieTable extends Equatable implements WatchlistTable {
   @override
   final int id;

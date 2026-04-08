@@ -1,11 +1,7 @@
 import 'dart:convert';
 import 'package:core/core.dart';
 
-import '../models/tv_series_detail_model.dart';
-import '../models/tv_series_model.dart';
 import 'package:http/http.dart' as http;
-
-import '../models/tv_series_response.dart';
 
 abstract class TVSeriesRemoteDataSource {
   Future<List<TVSeriesModel>> getAiringTodayTVSeries();

@@ -2,32 +2,27 @@ import 'package:equatable/equatable.dart';
 
 class Movie extends Equatable {
   Movie({
-    required this.adult,
-    required this.backdropPath,
-    required this.genreIds,
-    required this.id,
-    required this.originalTitle,
-    required this.overview,
-    required this.popularity,
-    required this.posterPath,
-    required this.releaseDate,
-    required this.title,
-    required this.video,
-    required this.voteAverage,
-    required this.voteCount,
+    this.adult,
+    this.backdropPath,
+    this.genreIds,
+    this.id,
+    this.originalTitle,
+    this.overview,
+    this.popularity,
+    this.posterPath,
+    this.releaseDate,
+    this.title,
+    this.video,
+    this.voteAverage,
+    this.voteCount,
   });
 
-  Movie.watchlist({
-    required this.id,
-    required this.overview,
-    required this.posterPath,
-    required this.title,
-  });
+  Movie.watchlist({this.id, this.overview, this.posterPath, this.title});
 
   bool? adult;
   String? backdropPath;
   List<int>? genreIds;
-  int id;
+  int? id;
   String? originalTitle;
   String? overview;
   double? popularity;

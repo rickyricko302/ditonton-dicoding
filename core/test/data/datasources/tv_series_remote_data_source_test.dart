@@ -4,8 +4,6 @@ import 'package:core/core.dart';
 import 'dart:convert';
 
 import 'package:core/data/datasources/tv_series_remote_data_source.dart';
-import 'package:core/data/models/tv_series_detail_model.dart';
-import 'package:core/data/models/tv_series_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';

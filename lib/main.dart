@@ -3,7 +3,13 @@ import 'package:core/core.dart';
 
 import 'package:flutter/material.dart';
 import 'package:ditonton/injection.dart' as di;
+import 'package:movie/movie.dart';
 import 'package:search/search.dart';
+import 'package:tv_series/tv_series.dart';
+import 'package:watchlist/presentation/pages/watchlist_page.dart';
+import 'package:watchlist/presentation/bloc/watchlist_movie_bloc.dart';
+import 'package:watchlist/presentation/bloc/watchlist_tv_series_bloc.dart';
+
 
 void main() {
   di.init();
@@ -27,7 +33,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => di.locator<PopularMoviesNotifier>(),
         ),
-        ChangeNotifierProvider(create: (_) => di.locator<WatchlistNotifier>()),
+        BlocProvider(create: (_) => di.locator<WatchlistMovieBloc>()),
+        BlocProvider(create: (_) => di.locator<WatchlistTVSeriesBloc>()),
         ChangeNotifierProvider(
           create: (_) => di.locator<TVSeriesListNotifier>(),
         ),
