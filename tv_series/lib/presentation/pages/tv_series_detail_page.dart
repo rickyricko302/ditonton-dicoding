@@ -1,6 +1,7 @@
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/button_watchlist.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tv_series/tv_series.dart';
 
 class TVSeriesDetailPage extends StatefulWidget {
@@ -16,10 +17,10 @@ class _TVSeriesDetailPageState extends State<TVSeriesDetailPage> {
     super.initState();
     Future.microtask(() {
       if (mounted) {
-        Provider.of<TVSeriesDetailNotifier>(context, listen: false)
-          ..fetchTVSeriesDetail(widget.id)
-          ..fetchTVSeriesRecommendations(widget.id)
-          ..loadWatchlistStatus(widget.id);
+        context.read<TVSeriesDetailBloc>().add(FetchTVSeriesDetail(widget.id));
+        context
+            .read<TVSeriesDetailBloc>()
+            .add(LoadWatchlistStatusTVSeries(widget.id));
       }
     });
   }
@@ -28,12 +29,12 @@ class _TVSeriesDetailPageState extends State<TVSeriesDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Consumer<TVSeriesDetailNotifier>(
-        builder: (context, notifier, child) {
-          if (notifier.state == RequestState.Loading) {
-            return Center(child: CircularProgressIndicator());
-          } else if (notifier.state == RequestState.Loaded) {
-            final tvSeries = notifier.tvSeriesDetail;
+      body: BlocBuilder<TVSeriesDetailBloc, TVSeriesDetailState>(
+        builder: (context, state) {
+          if (state.tvSeriesState == RequestState.Loading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state.tvSeriesState == RequestState.Loaded) {
+            final tvSeries = state.tvSeriesDetail!;
             return SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -47,19 +48,19 @@ class _TVSeriesDetailPageState extends State<TVSeriesDetailPage> {
                               'https://image.tmdb.org/t/p/w500/${tvSeries.posterPath}',
                           width: 200,
                           placeholder: (context, url) =>
-                              Center(child: CircularProgressIndicator()),
+                              const Center(child: CircularProgressIndicator()),
                           errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
+                              const Icon(Icons.error),
                         ),
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Text(
                       tvSeries.name,
                       style: kHeading5,
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Visibility(
                       visible: tvSeries.genres.isNotEmpty,
                       child: Text(
@@ -68,33 +69,33 @@ class _TVSeriesDetailPageState extends State<TVSeriesDetailPage> {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Text(
                       'First Air Date: ${tvSeries.firstAirDate}',
                       style: kSubtitle,
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Text(
                       'Episodes: ${tvSeries.numberOfEpisodes ?? 'N/A'}',
                       style: kSubtitle,
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.star, color: Colors.amber),
+                        const Icon(Icons.star, color: Colors.amber),
                         Text('${tvSeries.voteAverage}', style: kSubtitle),
                       ],
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text('Overview', style: kHeading6),
                     ),
                     Text(tvSeries.overview, style: kBodyText),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text('Season', style: kHeading6),
@@ -120,7 +121,7 @@ class _TVSeriesDetailPageState extends State<TVSeriesDetailPage> {
                                       constraints: BoxConstraints(
                                         maxHeight:
                                             MediaQuery.of(context).size.height *
-                                            0.8,
+                                                0.8,
                                       ),
                                       padding: const EdgeInsets.all(16),
                                       child: SingleChildScrollView(
@@ -133,32 +134,33 @@ class _TVSeriesDetailPageState extends State<TVSeriesDetailPage> {
                                               imageUrl:
                                                   'https://image.tmdb.org/t/p/w500/${season.posterPath}',
                                               width: 100,
-                                              placeholder: (context, url) => Center(
+                                              placeholder: (context, url) =>
+                                                  const Center(
                                                 child:
                                                     CircularProgressIndicator(),
                                               ),
                                               errorWidget:
                                                   (context, url, error) =>
-                                                      Icon(Icons.error),
+                                                      const Icon(Icons.error),
                                             ),
-                                            SizedBox(height: 8),
+                                            const SizedBox(height: 8),
                                             Text(season.name, style: kHeading6),
-                                            SizedBox(height: 8),
+                                            const SizedBox(height: 8),
                                             Text(
                                               'Air Date: ${season.airDate}',
                                               style: kSubtitle,
                                             ),
-                                            SizedBox(height: 8),
+                                            const SizedBox(height: 8),
                                             Text(
                                               'Episode Count: ${season.episodeCount}',
                                               style: kSubtitle,
                                             ),
-                                            SizedBox(height: 8),
+                                            const SizedBox(height: 8),
                                             Text(
                                               'Rating: ${season.voteAverage}',
                                               style: kSubtitle,
                                             ),
-                                            SizedBox(height: 16),
+                                            const SizedBox(height: 16),
                                             Align(
                                               alignment: Alignment.centerLeft,
                                               child: Text(
@@ -188,19 +190,19 @@ class _TVSeriesDetailPageState extends State<TVSeriesDetailPage> {
                         itemCount: tvSeries.seasons.length,
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text('Recommendations', style: kHeading6),
                     ),
-                    Consumer<TVSeriesDetailNotifier>(
-                      builder: (context, notifier, child) {
-                        if (notifier.recommendationsState ==
-                            RequestState.Loading) {
-                          return Center(child: CircularProgressIndicator());
-                        } else if (notifier.recommendationsState ==
+                    BlocBuilder<TVSeriesDetailBloc, TVSeriesDetailState>(
+                      builder: (context, state) {
+                        if (state.recommendationState == RequestState.Loading) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (state.recommendationState ==
                             RequestState.Loaded) {
-                          final recommendations = notifier.recommendations;
+                          final recommendations = state.tvSeriesRecommendations;
                           return Container(
                             height: 150,
                             margin: const EdgeInsets.only(bottom: 16),
@@ -223,7 +225,7 @@ class _TVSeriesDetailPageState extends State<TVSeriesDetailPage> {
                             ),
                           );
                         } else {
-                          return Text(notifier.message);
+                          return Text(state.message);
                         }
                       },
                     ),
@@ -232,7 +234,7 @@ class _TVSeriesDetailPageState extends State<TVSeriesDetailPage> {
               ),
             );
           } else {
-            return Center(child: Text(notifier.message));
+            return Center(child: Text(state.message));
           }
         },
       ),
@@ -240,33 +242,37 @@ class _TVSeriesDetailPageState extends State<TVSeriesDetailPage> {
         bottom: true,
         child: SizedBox(
           height: 50,
-          child: Consumer<TVSeriesDetailNotifier>(
-            builder: (context, notifier, child) {
-              final isAddedWatchlist = notifier.isAddedToWatchlist;
+          child: BlocConsumer<TVSeriesDetailBloc, TVSeriesDetailState>(
+            listenWhen: (previous, current) =>
+                previous.watchlistMessage != current.watchlistMessage &&
+                current.watchlistMessage.isNotEmpty,
+            listener: (context, state) {
+              final message = state.watchlistMessage;
+              if (message == 'Added to Watchlist' ||
+                  message == 'Removed from Watchlist') {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text(message)));
+              } else {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(content: Text(message));
+                  },
+                );
+              }
+            },
+            builder: (context, state) {
+              final isAddedWatchlist = state.isAddedToWatchlist;
               return ButtonWatchlist(
-                onPressed: () async {
+                onPressed: () {
                   if (!isAddedWatchlist) {
-                    await notifier.addWatchlist(notifier.tvSeriesDetail);
+                    context
+                        .read<TVSeriesDetailBloc>()
+                        .add(AddWatchlistTVSeries(state.tvSeriesDetail!));
                   } else {
-                    await notifier.removeFromWatchlist(notifier.tvSeriesDetail);
-                  }
-                  if (!context.mounted) return;
-                  final message = notifier.watchlistMessage;
-                  if (message ==
-                          TVSeriesDetailNotifier.watchlistAddSuccessMessage ||
-                      message ==
-                          TVSeriesDetailNotifier
-                              .watchlistRemoveSuccessMessage) {
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text(message)));
-                  } else {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(content: Text(message));
-                      },
-                    );
+                    context
+                        .read<TVSeriesDetailBloc>()
+                        .add(RemoveFromWatchlistTVSeries(state.tvSeriesDetail!));
                   }
                 },
                 isAddedWatchlist: isAddedWatchlist,
@@ -296,8 +302,8 @@ class _PosterWithClick extends StatelessWidget {
           child: CachedNetworkImage(
             imageUrl: 'https://image.tmdb.org/t/p/w500/$imageUrl',
             placeholder: (context, url) =>
-                Center(child: CircularProgressIndicator()),
-            errorWidget: (context, url, error) => Icon(Icons.error),
+                const Center(child: CircularProgressIndicator()),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
         ),
       ),

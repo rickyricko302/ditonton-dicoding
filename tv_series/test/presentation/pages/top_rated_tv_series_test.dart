@@ -1,24 +1,25 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:core/core.dart';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:tv_series/tv_series.dart';
 
-import 'top_rated_tv_series_test.mocks.dart';
+class MockTopRatedTVSeriesBloc
+    extends MockBloc<TopRatedTVSeriesEvent, TopRatedTVSeriesState>
+    implements TopRatedTVSeriesBloc {}
 
-@GenerateMocks([TopRatedTVSeriesNotifier])
 void main() {
-  late MockTopRatedTVSeriesNotifier mockTopRatedTVSeriesNotifier;
+  late MockTopRatedTVSeriesBloc mockBloc;
 
   setUp(() {
-    mockTopRatedTVSeriesNotifier = MockTopRatedTVSeriesNotifier();
+    mockBloc = MockTopRatedTVSeriesBloc();
   });
 
   Widget makeTestableWidget(Widget body) {
-    return ChangeNotifierProvider<TopRatedTVSeriesNotifier>.value(
-      value: mockTopRatedTVSeriesNotifier,
+    return BlocProvider<TopRatedTVSeriesBloc>.value(
+      value: mockBloc,
       child: MaterialApp(home: body),
     );
   }
@@ -26,13 +27,14 @@ void main() {
   testWidgets('should display CircularProgressIndicator when data is loading', (
     WidgetTester tester,
   ) async {
-    when(mockTopRatedTVSeriesNotifier.state).thenReturn(RequestState.Loading);
+    when(() => mockBloc.state).thenReturn(const TopRatedTVSeriesLoading());
+
     final circularProgressIndicatorFinder = find.byType(
       CircularProgressIndicator,
     );
     final centerFinder = find.byType(Center);
 
-    await tester.pumpWidget(makeTestableWidget(TopRatedTVSeriesPage()));
+    await tester.pumpWidget(makeTestableWidget(const TopRatedTVSeriesPage()));
     expect(centerFinder, findsOneWidget);
     expect(circularProgressIndicatorFinder, findsOneWidget);
   });
@@ -40,12 +42,14 @@ void main() {
   testWidgets('should display listview data tv series when succesfully load', (
     WidgetTester tester,
   ) async {
-    when(mockTopRatedTVSeriesNotifier.state).thenReturn(RequestState.Loaded);
     when(
-      mockTopRatedTVSeriesNotifier.topRatedTVSeries,
-    ).thenReturn(<TVSeries>[]);
+      () => mockBloc.state,
+    ).thenReturn(const TopRatedTVSeriesHasData(<TVSeries>[]));
+
     final listViewFinder = find.byType(ListView);
-    await tester.pumpWidget(makeTestableWidget(TopRatedTVSeriesPage()));
+
+    await tester.pumpWidget(makeTestableWidget(const TopRatedTVSeriesPage()));
+
     expect(listViewFinder, findsOneWidget);
   });
 }

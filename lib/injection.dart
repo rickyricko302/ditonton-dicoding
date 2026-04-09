@@ -42,21 +42,11 @@ void init() {
   );
   locator.registerFactory(() => WatchlistMovieBloc(locator()));
   locator.registerFactory(() => WatchlistTVSeriesBloc(locator()));
+  locator.registerFactory(() => AiringTodayTVSeriesBloc(locator()));
+  locator.registerFactory(() => PopularTVSeriesBloc(locator()));
+  locator.registerFactory(() => TopRatedTVSeriesBloc(locator()));
   locator.registerFactory(
-    () => TVSeriesListNotifier(
-      getTVSeriesAiringToday: locator(),
-      getPopularTVSeries: locator(),
-      getTopRatedTVSeries: locator(),
-    ),
-  );
-  locator.registerFactory(
-    () => PopularTVSeriesNotifier(getPopularTVSeries: locator()),
-  );
-  locator.registerFactory(
-    () => TopRatedTVSeriesNotifier(getTopRatedTVSeries: locator()),
-  );
-  locator.registerFactory(
-    () => TVSeriesDetailNotifier(
+    () => TVSeriesDetailBloc(
       getTVSeriesDetail: locator(),
       getRecommendationsTVSeries: locator(),
       watchlistService: locator(),

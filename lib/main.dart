@@ -28,18 +28,10 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => di.locator<MovieDetailBloc>()),
         BlocProvider(create: (_) => di.locator<WatchlistMovieBloc>()),
         BlocProvider(create: (_) => di.locator<WatchlistTVSeriesBloc>()),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<TVSeriesListNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<PopularTVSeriesNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<TopRatedTVSeriesNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<TVSeriesDetailNotifier>(),
-        ),
+        BlocProvider(create: (_) => di.locator<AiringTodayTVSeriesBloc>()),
+        BlocProvider(create: (_) => di.locator<PopularTVSeriesBloc>()),
+        BlocProvider(create: (_) => di.locator<TopRatedTVSeriesBloc>()),
+        BlocProvider(create: (_) => di.locator<TVSeriesDetailBloc>()),
         BlocProvider(
           create: (context) => di.locator<SearchBloc>(),
           child: Container(),

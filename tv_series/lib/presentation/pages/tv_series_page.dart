@@ -1,6 +1,7 @@
 import 'package:core/core.dart';
 import 'package:core/presentation/widgets/sub_heading.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tv_series/tv_series.dart';
 
 class TVSeriesPage extends StatefulWidget {
@@ -16,10 +17,9 @@ class _TVSeriesPageState extends State<TVSeriesPage> {
     super.initState();
     Future.microtask(() {
       if (mounted) {
-        Provider.of<TVSeriesListNotifier>(context, listen: false)
-          ..fetchAiringTodayTVSeries()
-          ..fetchPopularTVSeries()
-          ..fetchTopRatedTVSeries();
+        context.read<AiringTodayTVSeriesBloc>().add(FetchAiringTodayTVSeries());
+        context.read<PopularTVSeriesBloc>().add(FetchPopularTVSeries());
+        context.read<TopRatedTVSeriesBloc>().add(FetchTopRatedTVSeries());
       }
     });
   }
@@ -28,7 +28,7 @@ class _TVSeriesPageState extends State<TVSeriesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('TV Series'),
+        title: const Text('TV Series'),
         actions: [
           IconButton(
             onPressed: () {
@@ -38,7 +38,7 @@ class _TVSeriesPageState extends State<TVSeriesPage> {
                 arguments: SearchType.tv,
               );
             },
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
             tooltip: 'Search TV Series',
           ),
         ],
@@ -50,18 +50,19 @@ class _TVSeriesPageState extends State<TVSeriesPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Now Playing', style: kHeading6),
-              Consumer<TVSeriesListNotifier>(
-                builder: (context, data, child) {
-                  final state = data.airingTodayState;
-                  if (state == RequestState.Loading) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (state == RequestState.Loaded) {
+              BlocBuilder<AiringTodayTVSeriesBloc, AiringTodayTVSeriesState>(
+                builder: (context, state) {
+                  if (state is AiringTodayTVSeriesLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is AiringTodayTVSeriesHasData) {
                     return TVSeriesList(
-                      data.airingTodayTVSeries,
+                      state.result,
                       keyPrefix: 'airing_today',
                     );
+                  } else if (state is AiringTodayTVSeriesError) {
+                    return Text(state.message);
                   } else {
-                    return Text('Failed');
+                    return Container();
                   }
                 },
               ),
@@ -71,18 +72,19 @@ class _TVSeriesPageState extends State<TVSeriesPage> {
                   Navigator.pushNamed(context, POPULAR_TV_SERIES_ROUTE);
                 },
               ),
-              Consumer<TVSeriesListNotifier>(
-                builder: (context, data, child) {
-                  final state = data.popularState;
-                  if (state == RequestState.Loading) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (state == RequestState.Loaded) {
+              BlocBuilder<PopularTVSeriesBloc, PopularTVSeriesState>(
+                builder: (context, state) {
+                  if (state is PopularTVSeriesLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is PopularTVSeriesHasData) {
                     return TVSeriesList(
-                      data.popularTVSeries,
+                      state.result,
                       keyPrefix: 'popular',
                     );
+                  } else if (state is PopularTVSeriesError) {
+                    return Text(state.message);
                   } else {
-                    return Text('Failed');
+                    return Container();
                   }
                 },
               ),
@@ -92,18 +94,19 @@ class _TVSeriesPageState extends State<TVSeriesPage> {
                   Navigator.pushNamed(context, TOP_RATED_TV_SERIES_ROUTE);
                 },
               ),
-              Consumer<TVSeriesListNotifier>(
-                builder: (context, data, child) {
-                  final state = data.topRatedState;
-                  if (state == RequestState.Loading) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (state == RequestState.Loaded) {
+              BlocBuilder<TopRatedTVSeriesBloc, TopRatedTVSeriesState>(
+                builder: (context, state) {
+                  if (state is TopRatedTVSeriesLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is TopRatedTVSeriesHasData) {
                     return TVSeriesList(
-                      data.topRatedTVSeries,
+                      state.result,
                       keyPrefix: 'top_rated',
                     );
+                  } else if (state is TopRatedTVSeriesError) {
+                    return Text(state.message);
                   } else {
-                    return Text('Failed');
+                    return Container();
                   }
                 },
               ),
@@ -140,12 +143,12 @@ class TVSeriesList extends StatelessWidget {
                 );
               },
               child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(16)),
+                borderRadius: const BorderRadius.all(Radius.circular(16)),
                 child: CachedNetworkImage(
                   imageUrl: '$BASE_IMAGE_URL${tv.posterPath}',
                   placeholder: (context, url) =>
-                      Center(child: CircularProgressIndicator()),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
+                      const Center(child: CircularProgressIndicator()),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
               ),
             ),

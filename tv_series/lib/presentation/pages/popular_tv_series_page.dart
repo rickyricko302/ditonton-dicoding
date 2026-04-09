@@ -1,6 +1,7 @@
 import 'package:core/presentation/widgets/tv_series_card_list.dart';
 import 'package:flutter/material.dart';
 import 'package:core/core.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tv_series/tv_series.dart';
 
 class PopularTVSeriesPage extends StatefulWidget {
@@ -16,10 +17,7 @@ class _PopularTVSeriesPageState extends State<PopularTVSeriesPage> {
     super.initState();
     Future.microtask(() {
       if (mounted) {
-        Provider.of<PopularTVSeriesNotifier>(
-          context,
-          listen: false,
-        ).fetchPopularTVSeries();
+        context.read<PopularTVSeriesBloc>().add(FetchPopularTVSeries());
       }
     });
   }
@@ -27,26 +25,28 @@ class _PopularTVSeriesPageState extends State<PopularTVSeriesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Popular TV Series')),
+      appBar: AppBar(title: const Text('Popular TV Series')),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<PopularTVSeriesNotifier>(
-          builder: (context, data, child) {
-            if (data.state == RequestState.Loading) {
-              return Center(child: CircularProgressIndicator());
-            } else if (data.state == RequestState.Loaded) {
+        child: BlocBuilder<PopularTVSeriesBloc, PopularTVSeriesState>(
+          builder: (context, state) {
+            if (state is PopularTVSeriesLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is PopularTVSeriesHasData) {
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  final tvSeries = data.popularTVSeries[index];
+                  final tvSeries = state.result[index];
                   return TVSeriesCard(tvSeries);
                 },
-                itemCount: data.popularTVSeries.length,
+                itemCount: state.result.length,
+              );
+            } else if (state is PopularTVSeriesError) {
+              return Center(
+                key: const Key('error_message'),
+                child: Text(state.message),
               );
             } else {
-              return Center(
-                key: Key('error_message'),
-                child: Text(data.message),
-              );
+              return Container();
             }
           },
         ),
