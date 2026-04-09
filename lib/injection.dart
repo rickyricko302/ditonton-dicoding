@@ -26,35 +26,22 @@ import 'package:watchlist/domain/usecases/save_watchlist_tv_series.dart';
 import 'package:watchlist/presentation/bloc/watchlist_movie_bloc.dart';
 import 'package:watchlist/presentation/bloc/watchlist_tv_series_bloc.dart';
 
-
 final locator = GetIt.instance;
 
 void init() {
   // provider
+  locator.registerFactory(() => NowPlayingMoviesBloc(locator()));
+  locator.registerFactory(() => PopularMoviesBloc(locator()));
+  locator.registerFactory(() => TopRatedMoviesBloc(locator()));
   locator.registerFactory(
-    () => MovieListNotifier(
-      getNowPlayingMovies: locator(),
-      getPopularMovies: locator(),
-      getTopRatedMovies: locator(),
-    ),
-  );
-  locator.registerFactory(
-    () => MovieDetailNotifier(
+    () => MovieDetailBloc(
       getMovieDetail: locator(),
       getMovieRecommendations: locator(),
       watchlistService: locator(),
     ),
   );
-  locator.registerFactory(() => PopularMoviesNotifier(locator()));
-  locator.registerFactory(
-    () => TopRatedMoviesNotifier(getTopRatedMovies: locator()),
-  );
-  locator.registerFactory(
-    () => WatchlistMovieBloc(locator()),
-  );
-  locator.registerFactory(
-    () => WatchlistTVSeriesBloc(locator()),
-  );
+  locator.registerFactory(() => WatchlistMovieBloc(locator()));
+  locator.registerFactory(() => WatchlistTVSeriesBloc(locator()));
   locator.registerFactory(
     () => TVSeriesListNotifier(
       getTVSeriesAiringToday: locator(),

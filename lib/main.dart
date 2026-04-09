@@ -10,7 +10,6 @@ import 'package:watchlist/presentation/pages/watchlist_page.dart';
 import 'package:watchlist/presentation/bloc/watchlist_movie_bloc.dart';
 import 'package:watchlist/presentation/bloc/watchlist_tv_series_bloc.dart';
 
-
 void main() {
   di.init();
   runApp(MyApp());
@@ -23,16 +22,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => di.locator<MovieListNotifier>()),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<MovieDetailNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<TopRatedMoviesNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<PopularMoviesNotifier>(),
-        ),
+        BlocProvider(create: (_) => di.locator<NowPlayingMoviesBloc>()),
+        BlocProvider(create: (_) => di.locator<PopularMoviesBloc>()),
+        BlocProvider(create: (_) => di.locator<TopRatedMoviesBloc>()),
+        BlocProvider(create: (_) => di.locator<MovieDetailBloc>()),
         BlocProvider(create: (_) => di.locator<WatchlistMovieBloc>()),
         BlocProvider(create: (_) => di.locator<WatchlistTVSeriesBloc>()),
         ChangeNotifierProvider(
