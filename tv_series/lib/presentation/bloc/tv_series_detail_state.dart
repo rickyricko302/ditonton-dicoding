@@ -1,5 +1,4 @@
 import 'package:core/core.dart';
-import 'package:equatable/equatable.dart';
 
 class TVSeriesDetailState extends Equatable {
   final TVSeriesDetail? tvSeriesDetail;
@@ -32,7 +31,7 @@ class TVSeriesDetailState extends Equatable {
     );
   }
 
-   TVSeriesDetailState copyWith({
+  TVSeriesDetailState copyWith({
     TVSeriesDetail? tvSeriesDetail,
     List<TVSeries>? tvSeriesRecommendations,
     RequestState? tvSeriesState,
@@ -43,7 +42,8 @@ class TVSeriesDetailState extends Equatable {
   }) {
     return TVSeriesDetailState(
       tvSeriesDetail: tvSeriesDetail ?? this.tvSeriesDetail,
-      tvSeriesRecommendations: tvSeriesRecommendations ?? this.tvSeriesRecommendations,
+      tvSeriesRecommendations:
+          tvSeriesRecommendations ?? this.tvSeriesRecommendations,
       tvSeriesState: tvSeriesState ?? this.tvSeriesState,
       recommendationState: recommendationState ?? this.recommendationState,
       message: message ?? this.message,
@@ -54,12 +54,12 @@ class TVSeriesDetailState extends Equatable {
 
   @override
   List<Object?> get props => [
-        tvSeriesDetail,
-        tvSeriesRecommendations,
-        tvSeriesState,
-        recommendationState,
-        message,
-        watchlistMessage,
-        isAddedToWatchlist,
-      ];
+    tvSeriesDetail,
+    tvSeriesRecommendations,
+    tvSeriesState,
+    recommendationState,
+    message,
+    watchlistMessage,
+    isAddedToWatchlist,
+  ];
 }

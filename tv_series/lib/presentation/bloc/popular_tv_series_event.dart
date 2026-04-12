@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+import 'package:core/core.dart';
 
 abstract class PopularTVSeriesEvent extends Equatable {
   const PopularTVSeriesEvent();

@@ -4,9 +4,6 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:tv_series/presentation/bloc/airing_today_tv_series_bloc.dart';
-import 'package:tv_series/presentation/bloc/airing_today_tv_series_event.dart';
-import 'package:tv_series/presentation/bloc/airing_today_tv_series_state.dart';
 import 'package:tv_series/tv_series.dart';
 
 import 'airing_today_tv_series_bloc_test.mocks.dart';
@@ -18,7 +15,9 @@ void main() {
 
   setUp(() {
     mockGetAiringTodayTVSeries = MockGetAiringTodayTVSeries();
-    airingTodayTVSeriesBloc = AiringTodayTVSeriesBloc(mockGetAiringTodayTVSeries);
+    airingTodayTVSeriesBloc = AiringTodayTVSeriesBloc(
+      mockGetAiringTodayTVSeries,
+    );
   });
 
   final tTVSeries = TVSeries(
@@ -45,8 +44,9 @@ void main() {
   blocTest<AiringTodayTVSeriesBloc, AiringTodayTVSeriesState>(
     'should emit [Loading, HasData] when data is gotten successfully',
     build: () {
-      when(mockGetAiringTodayTVSeries.execute())
-          .thenAnswer((_) async => Right(tTVSeriesList));
+      when(
+        mockGetAiringTodayTVSeries.execute(),
+      ).thenAnswer((_) async => Right(tTVSeriesList));
       return airingTodayTVSeriesBloc;
     },
     act: (bloc) => bloc.add(FetchAiringTodayTVSeries()),
@@ -62,8 +62,9 @@ void main() {
   blocTest<AiringTodayTVSeriesBloc, AiringTodayTVSeriesState>(
     'should emit [Loading, Error] when get data is unsuccessful',
     build: () {
-      when(mockGetAiringTodayTVSeries.execute())
-          .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
+      when(
+        mockGetAiringTodayTVSeries.execute(),
+      ).thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
       return airingTodayTVSeriesBloc;
     },
     act: (bloc) => bloc.add(FetchAiringTodayTVSeries()),

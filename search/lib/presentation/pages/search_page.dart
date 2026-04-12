@@ -21,6 +21,15 @@ class SearchPage extends StatelessWidget {
           children: [
             TextField(
               onChanged: (query) {
+                if (query.isNotEmpty) {
+                  FirebaseAnalyticsHelper.logEvent(
+                    name: 'search',
+                    parameters: {
+                      'search_term': query,
+                      'search_type': searchType.toString(),
+                    },
+                  );
+                }
                 if (searchType == SearchType.movie) {
                   context.read<SearchBloc>().add(
                     OnQueryMovieChanged(query: query),

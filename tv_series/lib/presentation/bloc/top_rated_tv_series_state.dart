@@ -1,5 +1,4 @@
 import 'package:core/core.dart';
-import 'package:equatable/equatable.dart';
 
 abstract class TopRatedTVSeriesState extends Equatable {
   const TopRatedTVSeriesState();

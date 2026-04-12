@@ -4,9 +4,6 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:tv_series/presentation/bloc/top_rated_tv_series_bloc.dart';
-import 'package:tv_series/presentation/bloc/top_rated_tv_series_event.dart';
-import 'package:tv_series/presentation/bloc/top_rated_tv_series_state.dart';
 import 'package:tv_series/tv_series.dart';
 
 import 'top_rated_tv_series_bloc_test.mocks.dart';
@@ -45,8 +42,9 @@ void main() {
   blocTest<TopRatedTVSeriesBloc, TopRatedTVSeriesState>(
     'should emit [Loading, HasData] when data is gotten successfully',
     build: () {
-      when(mockGetTopRatedTVSeries.execute())
-          .thenAnswer((_) async => Right(tTVSeriesList));
+      when(
+        mockGetTopRatedTVSeries.execute(),
+      ).thenAnswer((_) async => Right(tTVSeriesList));
       return topRatedTVSeriesBloc;
     },
     act: (bloc) => bloc.add(FetchTopRatedTVSeries()),
@@ -62,8 +60,9 @@ void main() {
   blocTest<TopRatedTVSeriesBloc, TopRatedTVSeriesState>(
     'should emit [Loading, Error] when get data is unsuccessful',
     build: () {
-      when(mockGetTopRatedTVSeries.execute())
-          .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
+      when(
+        mockGetTopRatedTVSeries.execute(),
+      ).thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
       return topRatedTVSeriesBloc;
     },
     act: (bloc) => bloc.add(FetchTopRatedTVSeries()),

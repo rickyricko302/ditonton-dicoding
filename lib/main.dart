@@ -9,8 +9,22 @@ import 'package:tv_series/tv_series.dart';
 import 'package:watchlist/presentation/pages/watchlist_page.dart';
 import 'package:watchlist/presentation/bloc/watchlist_movie_bloc.dart';
 import 'package:watchlist/presentation/bloc/watchlist_tv_series_bloc.dart';
+import 'dart:ui';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+
   di.init();
   runApp(MyApp());
 }
@@ -20,7 +34,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => di.locator<NowPlayingMoviesBloc>()),
         BlocProvider(create: (_) => di.locator<PopularMoviesBloc>()),
@@ -47,7 +61,10 @@ class MyApp extends StatelessWidget {
           drawerTheme: kDrawerTheme,
         ),
         home: HomeMoviePage(),
-        navigatorObservers: [routeObserver],
+        navigatorObservers: [
+          routeObserver,
+          FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
+        ],
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
             case HOME_ROUTE:

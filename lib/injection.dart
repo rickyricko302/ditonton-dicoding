@@ -116,6 +116,8 @@ void init() {
   // external
   locator.registerLazySingleton(() => http.Client());
   locator.registerLazySingleton(() => Connectivity());
+  locator.registerLazySingleton(() => FirebaseAnalytics.instance);
+  locator.registerLazySingleton(() => FirebaseCrashlytics.instance);
 
   // services
   locator.registerLazySingleton<WatchlistService>(

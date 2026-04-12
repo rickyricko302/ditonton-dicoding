@@ -18,9 +18,9 @@ class _TVSeriesDetailPageState extends State<TVSeriesDetailPage> {
     Future.microtask(() {
       if (mounted) {
         context.read<TVSeriesDetailBloc>().add(FetchTVSeriesDetail(widget.id));
-        context
-            .read<TVSeriesDetailBloc>()
-            .add(LoadWatchlistStatusTVSeries(widget.id));
+        context.read<TVSeriesDetailBloc>().add(
+          LoadWatchlistStatusTVSeries(widget.id),
+        );
       }
     });
   }
@@ -121,7 +121,7 @@ class _TVSeriesDetailPageState extends State<TVSeriesDetailPage> {
                                       constraints: BoxConstraints(
                                         maxHeight:
                                             MediaQuery.of(context).size.height *
-                                                0.8,
+                                            0.8,
                                       ),
                                       padding: const EdgeInsets.all(16),
                                       child: SingleChildScrollView(
@@ -136,9 +136,9 @@ class _TVSeriesDetailPageState extends State<TVSeriesDetailPage> {
                                               width: 100,
                                               placeholder: (context, url) =>
                                                   const Center(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              ),
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  ),
                                               errorWidget:
                                                   (context, url, error) =>
                                                       const Icon(Icons.error),
@@ -199,7 +199,8 @@ class _TVSeriesDetailPageState extends State<TVSeriesDetailPage> {
                       builder: (context, state) {
                         if (state.recommendationState == RequestState.Loading) {
                           return const Center(
-                              child: CircularProgressIndicator());
+                            child: CircularProgressIndicator(),
+                          );
                         } else if (state.recommendationState ==
                             RequestState.Loaded) {
                           final recommendations = state.tvSeriesRecommendations;
@@ -250,8 +251,9 @@ class _TVSeriesDetailPageState extends State<TVSeriesDetailPage> {
               final message = state.watchlistMessage;
               if (message == 'Added to Watchlist' ||
                   message == 'Removed from Watchlist') {
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text(message)));
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(message)));
               } else {
                 showDialog(
                   context: context,
@@ -266,13 +268,13 @@ class _TVSeriesDetailPageState extends State<TVSeriesDetailPage> {
               return ButtonWatchlist(
                 onPressed: () {
                   if (!isAddedWatchlist) {
-                    context
-                        .read<TVSeriesDetailBloc>()
-                        .add(AddWatchlistTVSeries(state.tvSeriesDetail!));
+                    context.read<TVSeriesDetailBloc>().add(
+                      AddWatchlistTVSeries(state.tvSeriesDetail!),
+                    );
                   } else {
-                    context
-                        .read<TVSeriesDetailBloc>()
-                        .add(RemoveFromWatchlistTVSeries(state.tvSeriesDetail!));
+                    context.read<TVSeriesDetailBloc>().add(
+                      RemoveFromWatchlistTVSeries(state.tvSeriesDetail!),
+                    );
                   }
                 },
                 isAddedWatchlist: isAddedWatchlist,
