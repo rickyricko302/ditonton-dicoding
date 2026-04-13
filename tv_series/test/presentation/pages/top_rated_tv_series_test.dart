@@ -1,4 +1,3 @@
-import 'package:bloc_test/bloc_test.dart';
 import 'package:core/core.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -28,7 +27,9 @@ void main() {
     WidgetTester tester,
   ) async {
     when(mockBloc.state).thenReturn(const TopRatedTVSeriesLoading());
-    when(mockBloc.stream).thenAnswer((_) => Stream.value(const TopRatedTVSeriesLoading()));
+    when(
+      mockBloc.stream,
+    ).thenAnswer((_) => Stream.value(const TopRatedTVSeriesLoading()));
 
     final circularProgressIndicatorFinder = find.byType(
       CircularProgressIndicator,
@@ -43,8 +44,12 @@ void main() {
   testWidgets('should display listview data tv series when succesfully load', (
     WidgetTester tester,
   ) async {
-    when(mockBloc.state).thenReturn(const TopRatedTVSeriesHasData(<TVSeries>[]));
-    when(mockBloc.stream).thenAnswer((_) => Stream.value(const TopRatedTVSeriesHasData(<TVSeries>[])));
+    when(
+      mockBloc.state,
+    ).thenReturn(const TopRatedTVSeriesHasData(<TVSeries>[]));
+    when(mockBloc.stream).thenAnswer(
+      (_) => Stream.value(const TopRatedTVSeriesHasData(<TVSeries>[])),
+    );
 
     final listViewFinder = find.byType(ListView);
 

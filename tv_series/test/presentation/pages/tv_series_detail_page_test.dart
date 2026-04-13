@@ -1,4 +1,3 @@
-import 'package:bloc_test/bloc_test.dart';
 import 'package:core/core.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -29,8 +28,8 @@ void main() {
     'Watchlist button should display CircularProgressIndicator when loading',
     (WidgetTester tester) async {
       final initialState = TVSeriesDetailState.initial().copyWith(
-          tvSeriesState: RequestState.Loading,
-        );
+        tvSeriesState: RequestState.Loading,
+      );
       when(mockBloc.state).thenReturn(initialState);
       when(mockBloc.stream).thenAnswer((_) => Stream.value(initialState));
 
@@ -48,12 +47,12 @@ void main() {
     'Watchlist button should display add icon when tv series not added to watchlist',
     (WidgetTester tester) async {
       final initialState = TVSeriesDetailState.initial().copyWith(
-          tvSeriesState: RequestState.Loaded,
-          tvSeriesDetail: testTVSeriesDetail,
-          recommendationState: RequestState.Loaded,
-          tvSeriesRecommendations: <TVSeries>[],
-          isAddedToWatchlist: false,
-        );
+        tvSeriesState: RequestState.Loaded,
+        tvSeriesDetail: testTVSeriesDetail,
+        recommendationState: RequestState.Loaded,
+        tvSeriesRecommendations: <TVSeries>[],
+        isAddedToWatchlist: false,
+      );
       when(mockBloc.state).thenReturn(initialState);
       when(mockBloc.stream).thenAnswer((_) => Stream.value(initialState));
 
@@ -71,12 +70,12 @@ void main() {
     'Watchlist button should display check icon when tv series is added to watchlist',
     (WidgetTester tester) async {
       final initialState = TVSeriesDetailState.initial().copyWith(
-          tvSeriesState: RequestState.Loaded,
-          tvSeriesDetail: testTVSeriesDetail,
-          recommendationState: RequestState.Loaded,
-          tvSeriesRecommendations: <TVSeries>[],
-          isAddedToWatchlist: true,
-        );
+        tvSeriesState: RequestState.Loaded,
+        tvSeriesDetail: testTVSeriesDetail,
+        recommendationState: RequestState.Loaded,
+        tvSeriesRecommendations: <TVSeries>[],
+        isAddedToWatchlist: true,
+      );
       when(mockBloc.state).thenReturn(initialState);
       when(mockBloc.stream).thenAnswer((_) => Stream.value(initialState));
 
@@ -94,19 +93,19 @@ void main() {
     'Watchlist button should display Snackbar when added to watchlist',
     (WidgetTester tester) async {
       final initialState = TVSeriesDetailState.initial().copyWith(
-          tvSeriesState: RequestState.Loaded,
-          tvSeriesDetail: testTVSeriesDetail,
-          recommendationState: RequestState.Loaded,
-          tvSeriesRecommendations: <TVSeries>[],
-          isAddedToWatchlist: false,
-        );
+        tvSeriesState: RequestState.Loaded,
+        tvSeriesDetail: testTVSeriesDetail,
+        recommendationState: RequestState.Loaded,
+        tvSeriesRecommendations: <TVSeries>[],
+        isAddedToWatchlist: false,
+      );
       final expectedStates = [
-        initialState.copyWith(
-          watchlistMessage: 'Added to Watchlist',
-        ),
+        initialState.copyWith(watchlistMessage: 'Added to Watchlist'),
       ];
       when(mockBloc.state).thenReturn(initialState);
-      when(mockBloc.stream).thenAnswer((_) => Stream.fromIterable(expectedStates));
+      when(
+        mockBloc.stream,
+      ).thenAnswer((_) => Stream.fromIterable(expectedStates));
 
       await tester.pumpWidget(
         makeTestableWidget(const TVSeriesDetailPage(id: 1)),
@@ -125,19 +124,19 @@ void main() {
     'Watchlist button should display AlertDialog when add to watchlist failed',
     (WidgetTester tester) async {
       final initialState = TVSeriesDetailState.initial().copyWith(
-          tvSeriesState: RequestState.Loaded,
-          tvSeriesDetail: testTVSeriesDetail,
-          recommendationState: RequestState.Loaded,
-          tvSeriesRecommendations: <TVSeries>[],
-          isAddedToWatchlist: false,
-        );
+        tvSeriesState: RequestState.Loaded,
+        tvSeriesDetail: testTVSeriesDetail,
+        recommendationState: RequestState.Loaded,
+        tvSeriesRecommendations: <TVSeries>[],
+        isAddedToWatchlist: false,
+      );
       final expectedStates = [
-        initialState.copyWith(
-          watchlistMessage: 'Failed',
-        ),
+        initialState.copyWith(watchlistMessage: 'Failed'),
       ];
       when(mockBloc.state).thenReturn(initialState);
-      when(mockBloc.stream).thenAnswer((_) => Stream.fromIterable(expectedStates));
+      when(
+        mockBloc.stream,
+      ).thenAnswer((_) => Stream.fromIterable(expectedStates));
 
       await tester.pumpWidget(
         makeTestableWidget(const TVSeriesDetailPage(id: 1)),

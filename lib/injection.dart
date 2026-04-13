@@ -1,5 +1,6 @@
 import 'package:core/core.dart';
 import 'package:core/core.dart' as http;
+import 'package:core/utils/http_client.dart';
 import 'package:movie/movie.dart';
 import 'package:tv_series/tv_series.dart';
 
@@ -28,7 +29,8 @@ import 'package:watchlist/presentation/bloc/watchlist_tv_series_bloc.dart';
 
 final locator = GetIt.instance;
 
-void init() {
+void init() async {
+  final httpClient = await createHttpClient();
   // provider
   locator.registerFactory(() => NowPlayingMoviesBloc(locator()));
   locator.registerFactory(() => PopularMoviesBloc(locator()));
@@ -114,7 +116,7 @@ void init() {
   locator.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(locator()));
 
   // external
-  locator.registerLazySingleton(() => http.Client());
+  locator.registerLazySingleton<http.Client>(() => httpClient);
   locator.registerLazySingleton(() => Connectivity());
   locator.registerLazySingleton(() => FirebaseAnalytics.instance);
   locator.registerLazySingleton(() => FirebaseCrashlytics.instance);

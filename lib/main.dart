@@ -1,5 +1,6 @@
 import 'package:about/about.dart';
 import 'package:core/core.dart';
+import 'package:core/utils/http_client.dart';
 
 import 'package:flutter/material.dart';
 import 'package:ditonton/injection.dart' as di;
@@ -14,6 +15,7 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   FlutterError.onError = (errorDetails) {
@@ -24,7 +26,7 @@ void main() async {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
-
+  final client = await createHttpClient();
   di.init();
   runApp(MyApp());
 }
