@@ -1,6 +1,5 @@
 import 'package:about/about.dart';
 import 'package:core/core.dart';
-import 'package:core/utils/http_client.dart';
 
 import 'package:flutter/material.dart';
 import 'package:ditonton/injection.dart' as di;
@@ -26,7 +25,6 @@ void main() async {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
-  final client = await createHttpClient();
   di.init();
   runApp(MyApp());
 }
