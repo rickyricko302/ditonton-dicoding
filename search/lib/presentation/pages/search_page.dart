@@ -78,6 +78,7 @@ class _SearchMovie extends StatelessWidget {
           final result = state.movie;
           return Expanded(
             child: ListView.builder(
+              key: const Key('search_movie_list'),
               padding: const EdgeInsets.all(8),
               itemBuilder: (context, index) {
                 final movie = state.movie[index];
@@ -132,6 +133,7 @@ class _SearchTVSeries extends StatelessWidget {
           final result = state.tvSeries;
           return Expanded(
             child: ListView.builder(
+              key: const Key('search_tv_series_list'),
               padding: const EdgeInsets.all(8),
               itemBuilder: (context, index) {
                 final tvSeries = state.tvSeries[index];
